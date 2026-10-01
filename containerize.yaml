@@ -1,0 +1,28 @@
+_schema-version: '1.0'
+repository: misha2012
+tag: v11
+before-all:
+  - cp -f resources/cdm.json .deploy/html5-deployer/resources/cdm.json
+modules:
+  - name: incident-management-srv
+    build-parameters:
+      buildpack:
+        type: nodejs
+        builder: builder-jammy-base
+        path: gen/srv
+        env:
+          BP_NODE_RUN_SCRIPTS: ""
+  - name: incident-management-sidecar
+    build-parameters:
+      buildpack:
+        type: nodejs
+        builder: builder-jammy-base
+        path: gen/mtx/sidecar
+        env:
+          BP_NODE_RUN_SCRIPTS: ""
+  - name: incident-management-html5-deployer
+    build-parameters:
+      buildpack:
+        type: sapse/application-content-deployer-buildpack:1.5.0
+        builder: builder-jammy-base
+        path: .deploy/html5-deployer
